@@ -31,18 +31,18 @@ jobs:
       - name: Build Docker image
         run: docker build -t nextjs-cicd .
 
+      - name: Debug OIDC identity
+        run: |
+          echo "repository: ${{ github.repository }}"
+          echo "ref: ${{ github.ref }}"
+          echo "sub should be: repo:${{ github.repository }}:ref:${{ github.ref }}"
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::350869994103:role/GitHubActions-ECR
           aws-region: ap-southeast-1
-        - name: Debug OIDC identity
-          run: |
-          echo "repository: ${{ github.repository }}"
-          echo "ref: ${{ github.ref }}"
-          echo "sub should be: repo:${{ github.repository }}:ref:${{ github.ref }}"
-
-
+  
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
